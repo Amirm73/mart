@@ -7,7 +7,7 @@ import {
   CreateUserInput,
   ListUserInput,
   UpdateUserInput,
-} from './user.inputs';
+} from '../domain/user.inputs';
 
 @Injectable()
 export class UserService {
