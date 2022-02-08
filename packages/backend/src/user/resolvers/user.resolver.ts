@@ -1,4 +1,3 @@
-
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 
@@ -22,9 +21,7 @@ export class UserResolver {
   }
 
   @Query(() => [User])
-  async users(
-    @Args('filters', { nullable: true }) filters?: ListUserInput,
-  ) {
+  async users(@Args('filters', { nullable: true }) filters?: ListUserInput) {
     return this.userService.list(filters);
   }
 
