@@ -11,6 +11,9 @@ import {
 
 @Injectable()
 export class UserService {
+  findOne(userName: String) {
+    throw new Error('Method not implemented.');
+  }
   constructor(
     @InjectModel(User.name) private userModel: Model<UserDocument>,
   ) {}
