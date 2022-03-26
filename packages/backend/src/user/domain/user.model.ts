@@ -10,7 +10,40 @@ export class User {
 
   @Field(() => String)
   @Prop()
-  name: string;
+  firstName: string;
+
+  @Field(() => String)
+  @Prop()
+  lastName: string;
+
+  @Field(() => String)
+  @Prop()
+  nationalCode: string;
+
+  @Field(() => String)
+  @Prop()
+  email: string;
+
+  @Field(() => String)
+  @Prop()
+  phone: string;
+
+  @Field(() => String)
+  @Prop()
+  address: string;
+
+  @Field(() => String)
+  @Prop()
+  userName: string;
+
+  @Field(() => String)
+  @Prop()
+  password: string;
+
+  @Field(() => String)
+  @Prop()
+  avatar: string;
+  
 }
 
 export type UserDocument = User & Document;

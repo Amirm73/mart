@@ -3,12 +3,28 @@
 # ------------------------------------------------------
 
 input CreateUserInput {
-  name: String!
+  address: String
+  avatar: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  nationalCode: String!
+  password: String!
+  phone: String!
+  userName: String!
 }
 
 input ListUserInput {
   _id: String
-  name: String
+  address: String
+  avatar: String
+  email: String
+  firstName: String
+  lastName: String
+  nationalCode: String
+  password: String
+  phone: String
+  userName: String
 }
 
 type Mutation {
@@ -24,10 +40,26 @@ type Query {
 
 input UpdateUserInput {
   _id: String!
-  name: String
+  address: String
+  avatar: String
+  email: String
+  firstName: String
+  lastName: String
+  nationalCode: String
+  password: String
+  phone: String
+  userName: String
 }
 
 type User {
   _id: String!
-  name: String!
+  address: String!
+  avatar: String!
+  email: String!
+  firstName: String!
+  lastName: String!
+  nationalCode: String!
+  password: String!
+  phone: String!
+  userName: String!
 }
