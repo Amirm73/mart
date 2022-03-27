@@ -10,27 +10,7 @@ export class User {
 
   @Field(() => String)
   @Prop()
-  firstName: string;
-
-  @Field(() => String)
-  @Prop()
-  lastName: string;
-
-  @Field(() => String)
-  @Prop()
-  nationalCode: string;
-
-  @Field(() => String)
-  @Prop()
   email: string;
-
-  @Field(() => String)
-  @Prop()
-  phone: string;
-
-  @Field(() => String)
-  @Prop()
-  address: string;
 
   @Field(() => String)
   @Prop()
@@ -40,10 +20,29 @@ export class User {
   @Prop()
   password: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  avatar: string;
-  
+  firstName: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  lastName?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  nationalCode?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  phone?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  address?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  avatar?: string;
 }
 
 export type UserDocument = User & Document;
