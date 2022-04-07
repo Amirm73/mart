@@ -1,43 +1,32 @@
 import { Injectable } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model, Schema as MongooseSchema } from 'mongoose';
-
-import { User, UserDocument } from '../domain/user.model';
-import {
-  CreateUserInput,
-  ListUserInput,
-  UpdateUserInput,
-} from '../domain/user.inputs';
-
+import { Schema as MongooseSchema } from 'mongoose';
+import { CreateUserInput } from '../dto/CreateUser.input';
+import { ListUserInput } from '../dto/ListUsers.input';
+import { UpdateUserInput } from '../dto/UpdateUser.input';
+import { UserRepository } from '../repository/users.repository';
 @Injectable()
 export class UserService {
-  findOne(userName: String) {
-    throw new Error('Method not implemented.');
-  }
-  constructor(
-    @InjectModel(User.name) private userModel: Model<UserDocument>,
-  ) {}
-
-  create(payload: CreateUserInput) {
-    const createdUser = new this.userModel(payload);
-    return createdUser.save();
+  constructor(private userRepository: UserRepository) {}
+  findUserByPhone(phone: string) {
+    return this.userRepository.findByPhone(phone);
   }
 
-  getById(_id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findById(_id).exec();
+  createUser(payload: CreateUserInput) {
+    return this.userRepository.create(payload);
   }
 
-  list(filters: ListUserInput) {
-    return this.userModel.find({ ...filters }).exec();
+  findUserById(_id: MongooseSchema.Types.ObjectId) {
+    return this.userRepository.findById(_id);
   }
 
-  update(payload: UpdateUserInput) {
-    return this.userModel
-      .findByIdAndUpdate(payload._id, payload, { new: true })
-      .exec();
+  listUsers(filters: ListUserInput) {
+    return this.userRepository.findAll(filters);
+  }
+  updateUser(payload: UpdateUserInput) {
+    return this.userRepository.update(payload);
   }
 
-  delete(_id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findByIdAndDelete(_id).exec();
+  deleteUser(_id: MongooseSchema.Types.ObjectId) {
+    return this.userRepository.delete(_id);
   }
 }
