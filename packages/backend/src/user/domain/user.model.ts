@@ -8,13 +8,9 @@ export class User {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true, description: ' email is not ' })
   @Prop()
-  email: string;
-
-  @Field(() => String)
-  @Prop()
-  userName: string;
+  email?: string;
 
   @Field(() => String)
   @Prop()
