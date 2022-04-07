@@ -848,10 +848,17 @@
     "jsonc-parser" "3.0.0"
     "pluralize" "8.0.0"
 
+<<<<<<< HEAD
 "@nestjs/testing@^8.0.0":
   "integrity" "sha512-Cg8tM7yxlLDBO+CTNjk6X/UkxGRsprFc8gDHGEGesiE9wLErxNnslFugfUnYWJaSzmLZSqcFFig7mThc8VSxrw=="
   "resolved" "https://registry.npmjs.org/@nestjs/testing/-/testing-8.2.6.tgz"
   "version" "8.2.6"
+=======
+"@nestjs/testing@^8.4.3":
+  version "8.4.3"
+  resolved "https://registry.yarnpkg.com/@nestjs/testing/-/testing-8.4.3.tgz#2d2aa522fecb75ae9080a1abd572eb648c9c05c6"
+  integrity sha512-6+b2UCObr5onv7TG398VUdkNeU9n+f+TeTvlzmZlp9LKIAS4ZxDxwpdLDl5m/AssdkaZpfb0u755BJfKP5wbNw==
+>>>>>>> 9963899f408480fe583a52704eed7cd7f4f314bd
   dependencies:
     "optional" "0.1.4"
     "tslib" "2.3.1"

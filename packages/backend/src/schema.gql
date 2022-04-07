@@ -4,27 +4,18 @@
 
 input CreateUserInput {
   address: String
-  avatar: String!
-  email: String!
-  firstName: String!
-  lastName: String!
-  nationalCode: String!
-  password: String!
-  phone: String!
-  userName: String!
-}
-
-input ListUserInput {
-  _id: String
-  address: String
   avatar: String
   email: String
   firstName: String
   lastName: String
   nationalCode: String
-  password: String
-  phone: String
-  userName: String
+  phone: String!
+}
+
+input ListUserInput {
+  address: String
+  firstName: String
+  lastName: String
 }
 
 type Mutation {
@@ -53,13 +44,14 @@ input UpdateUserInput {
 
 type User {
   _id: String!
-  address: String!
-  avatar: String!
-  email: String!
-  firstName: String!
-  lastName: String!
-  nationalCode: String!
+  address: String
+  avatar: String
+
+  """ email is not """
+  email: String
+  firstName: String
+  lastName: String
+  nationalCode: String
   password: String!
-  phone: String!
-  userName: String!
+  phone: String
 }
