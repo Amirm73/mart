@@ -3,7 +3,7 @@ import { Schema as MongooseSchema } from 'mongoose';
 import { CreateUserInput } from '../dto/CreateUser.input';
 import { ListUserInput } from '../dto/ListUsers.input';
 import { UpdateUserInput } from '../dto/UpdateUser.input';
-import { UserRepository } from '../repository/users.repository';
+import { UserRepository } from '../repository/user.repository';
 @Injectable()
 export class UserService {
   constructor(private userRepository: UserRepository) {}

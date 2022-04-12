@@ -8,7 +8,7 @@ import { User, UserDocument } from '../domain/user.model';
 import { UserRepository } from './users.repository';
 // import graphqlScalars from 'graphql-scalar-types';
 
-describe('UsersRepository', () => {
+describe('UserRepository', () => {
   let mockUserModel: Model<UserDocument>;
   let mockRepository: UserRepository;
 
