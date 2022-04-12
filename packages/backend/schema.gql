@@ -1,0 +1,57 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type User {
+  _id: String!
+
+  """ email is not """
+  email: String
+  password: String!
+  firstName: String
+  lastName: String
+  nationalCode: String
+  phone: String
+  address: String
+  avatar: String
+}
+
+type Query {
+  user(_id: String!): User!
+  users(filters: ListUserInput): [User!]!
+}
+
+input ListUserInput {
+  firstName: String
+  lastName: String
+  address: String
+}
+
+type Mutation {
+  createUser(payload: CreateUserInput!): User!
+  updateUser(payload: UpdateUserInput!): User!
+  deleteUser(_id: String!): User!
+}
+
+input CreateUserInput {
+  phone: String!
+  email: String
+  firstName: String
+  lastName: String
+  nationalCode: String
+  address: String
+  avatar: String
+}
+
+input UpdateUserInput {
+  _id: String!
+  firstName: String
+  lastName: String
+  nationalCode: String
+  email: String
+  phone: String
+  address: String
+  userName: String
+  password: String
+  avatar: String
+}
