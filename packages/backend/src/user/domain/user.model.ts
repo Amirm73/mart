@@ -8,17 +8,21 @@ export class User {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @Field(() => String, { nullable: true, description: ' email is not ' })
+  @Field(() => String, {
+    nullable: true,
+    description:
+      'email is not mandatory for ease of registration and is filled out later',
+  })
   @Prop()
   email?: string;
 
-  @Field(() => String)
+  // password is not returned to any client
   @Prop()
   password: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
-  firstName: string;
+  firstName?: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
@@ -28,9 +32,9 @@ export class User {
   @Prop()
   nationalCode?: string;
 
-  @Field(() => String, { nullable: true })
+  @Field(() => String)
   @Prop()
-  phone?: string;
+  phone: string;
 
   @Field(() => String, { nullable: true })
   @Prop()
