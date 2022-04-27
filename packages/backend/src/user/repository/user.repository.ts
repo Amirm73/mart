@@ -13,7 +13,9 @@ import { UpdateUserInput } from '../dto/UpdateUser.input';
 
 @Injectable()
 export class UserRepository {
-  constructor(@InjectModel(User.name) private userModel: Model<UserDocument>) {}
+  constructor(
+    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+  ) {}
 
   // TODO: send a generated password to user phone number and then create the user
   async create(createUserInput: CreateUserInput) {
@@ -29,7 +31,7 @@ export class UserRepository {
   }
 
   async findById(_id: MongooseSchema.Types.ObjectId) {
-    return await this.userModel.findById(_id).exec();
+    return await this.userModel.findById({ _id }).exec();
   }
 
   async findByIdOrThrow(_id: MongooseSchema.Types.ObjectId) {
