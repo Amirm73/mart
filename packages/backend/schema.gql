@@ -5,13 +5,14 @@
 type User {
   _id: String!
 
-  """ email is not """
+  """
+  email is not mandatory for ease of registration and is filled out later
+  """
   email: String
-  password: String!
   firstName: String
   lastName: String
   nationalCode: String
-  phone: String
+  phone: String!
   address: String
   avatar: String
 }
