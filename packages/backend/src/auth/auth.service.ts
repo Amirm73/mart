@@ -5,7 +5,7 @@ import { UserService } from '../user/service/user.service';
 export class AuthService {
   constructor(private userService: UserService) {}
 
-  async validateUser(phone: string): Promise<any> {
+  async validateUser(phone: string, password: string): Promise<any> {
     const user = await this.userService.findUserByPhone(phone);
 
     console.log(user);
