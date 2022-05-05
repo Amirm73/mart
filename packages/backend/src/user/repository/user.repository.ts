@@ -6,7 +6,8 @@ import {
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model, Schema as MongooseSchema } from 'mongoose';
-import { User, UserDocument } from '../domain/user.model';
+import { IUserDocument } from '../domain/user.interface';
+import { User } from '../domain/user.model';
 import { CreateUserInput } from '../dto/CreateUser.input';
 import { ListUserInput as ListUserInput } from '../dto/ListUsers.input';
 import { UpdateUserInput } from '../dto/UpdateUser.input';
@@ -14,7 +15,7 @@ import { UpdateUserInput } from '../dto/UpdateUser.input';
 @Injectable()
 export class UserRepository {
   constructor(
-    @InjectModel(User.name) private readonly userModel: Model<UserDocument>,
+    @InjectModel(User.name) private readonly userModel: Model<IUserDocument>,
   ) {}
 
   // TODO: send a generated password to user phone number and then create the user
@@ -61,17 +62,6 @@ export class UserRepository {
   }
 
   delete(_id: MongooseSchema.Types.ObjectId) {
-    return this.userModel.findByIdAndDelete(_id).exec();
+    return this.userModel.findByIdAndDelete(_id);
   }
-}
-
-/* eslint-disable @typescript-eslint/no-empty-function */
-export class UserRepositoryFake {
-  public async create(): Promise<void> {}
-  public async findById(): Promise<void> {}
-  public async findByIdOrThrow(): Promise<void> {}
-  public async findByPhone(): Promise<void> {}
-  public async findAll(): Promise<void> {}
-  public async update(): Promise<void> {}
-  public async delete(): Promise<void> {}
 }
