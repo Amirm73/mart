@@ -6,7 +6,7 @@ export class CreateUserInput {
   phone: string;
 
   @Field(() => String, { nullable: true })
-  email: string;
+  email?: string;
 
   @Field(() => String, { nullable: true })
   firstName?: string;
