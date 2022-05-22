@@ -1,9 +1,8 @@
 import {
   createUserInput,
-  createUserInputJustMail,
   createUserMutation,
   createUserName,
-} from './helpers/create.users.helper';
+} from './specHelpers/create.user.helper';
 import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as supertest from 'supertest';
@@ -18,15 +17,20 @@ import {
   rootGraphqlTest,
 } from '../../common/test/graphql.helper';
 import {
-  UpdateUserInputJustMail,
+  UpdateUserInputGenerator,
   UpdateUserMutation,
   UpdateUserOperationName,
-} from './helpers/update.users.helper';
+} from './specHelpers/update.user.helper';
+import {
+  DeleteUserMutation,
+  DeleteUserOperationName,
+} from './specHelpers/delete.user.helper';
 
 describe('Users resolver (e2e)', () => {
   let app: INestApplication;
   let user: User;
-  beforeEach(async () => {
+
+  beforeAll(async () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [
         await rootMongoTest(),
@@ -39,7 +43,7 @@ describe('Users resolver (e2e)', () => {
     app = moduleFixture.createNestApplication();
     await app.init();
   });
-  afterEach(async () => {
+  afterAll(async () => {
     await closeMongo();
     await app.close();
   });
@@ -55,56 +59,42 @@ describe('Users resolver (e2e)', () => {
 
       .expect((res) => {
         user = JSON.parse(res.text).data.CreateUser;
+        console.log(user);
+
         expect(user._id).toBeDefined();
         expect(user.phone).toBe(createUserInput.phone);
         expect(user.email).toBe(createUserInput.email);
       });
   });
 
-  it('does Not create a user without phone', async () => {
+  it('updates a user ', async () => {
     await supertest(app.getHttpServer())
       .post(GRAPHQL_ENDPOINT)
-      .send({
-        operationName: createUserName,
-        query: createUserMutation,
-        variables: createUserInputJustMail,
-      })
-
-      .expect((res) => {
-        const testUser: User = JSON.parse(res.text)?.data?.CreateUser;
-        expect(testUser).toBe(undefined);
-      });
-  });
-
-  it('does Not updates a user without id', async () => {
-    await supertest(app.getHttpServer())
-      .post(GRAPHQL_ENDPOINT)
-
       .send({
         operationName: UpdateUserOperationName,
         query: UpdateUserMutation,
-        variables: UpdateUserInputJustMail,
+        variables: UpdateUserInputGenerator(user._id),
       })
       .expect((res) => {
         const result = JSON.parse(res.text);
-        expect(result.errors.length).not.toBe(0);
+        console.log(result.errors);
+        expect(result.errors).toBe(undefined);
       });
   });
 
-  it.skip('updates a user ', async () => {
-    const updateObject = UpdateUserInputJustMail;
+  it('deletes a user ', async () => {
+    console.log(user._id);
     await supertest(app.getHttpServer())
       .post(GRAPHQL_ENDPOINT)
 
       .send({
-        operationName: UpdateUserOperationName,
-        query: UpdateUserMutation,
-        variables: { id: user._id, email: updateObject.email },
+        operationName: DeleteUserOperationName,
+        query: DeleteUserMutation,
+        variables: { id: user._id },
       })
       .expect((res) => {
-        const result = JSON.parse(res.text)?.data?.UpdateUser;
-        expect(result.errors.length).not.toBe(0);
-        expect(result.email).toBe(updateObject.email);
+        const result = JSON.parse(res.text);
+        expect(result.data?.DeleteUser?._id).toBe(user._id);
       });
   });
 });
