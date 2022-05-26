@@ -1,0 +1,11 @@
+# to make smaller size docker image
+# we define and upload our dependencies as DEPENDENCIES
+# this image is uploaded to dockerhub and can be updated.
+
+FROM makinhs/nestjs-base:latest AS DEPENDENCIES
+WORKDIR /usr/src/app
+
+# install dependencies
+RUN yarn --frozen-lockfile
+COPY . .
+RUN yarn install
