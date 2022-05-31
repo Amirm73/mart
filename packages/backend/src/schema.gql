@@ -10,12 +10,15 @@ input CreateUserInput {
   lastName: String
   nationalCode: String
   phone: String!
+  password: String!
 }
 
 input ListUserInput {
   address: String
   firstName: String
   lastName: String
+  phone: String
+  password: String
 }
 
 type Mutation {

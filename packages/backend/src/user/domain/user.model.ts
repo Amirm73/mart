@@ -17,6 +17,7 @@ export class User {
   email?: string;
 
   // password is not returned to any client
+  @Field(() => String)
   @Prop()
   password: string;
 

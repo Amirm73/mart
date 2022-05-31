@@ -9,6 +9,7 @@ type User {
   email is not mandatory for ease of registration and is filled out later
   """
   email: String
+  password: String!
   firstName: String
   lastName: String
   nationalCode: String
@@ -26,6 +27,8 @@ input ListUserInput {
   firstName: String
   lastName: String
   address: String
+  phone: String
+  password: String
 }
 
 type Mutation {
@@ -36,6 +39,7 @@ type Mutation {
 
 input CreateUserInput {
   phone: String!
+  password: String!
   email: String
   firstName: String
   lastName: String
