@@ -12,29 +12,29 @@ export class UserResolver {
   constructor(private userService: UserService) {}
 
   @Query(() => User, { name: 'user' })
-  async getUserById(
+  async GetUserById(
     @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.findUserById(_id);
   }
 
   @Query(() => [User], { name: 'users' })
-  async getUsers(@Args('filters', { nullable: true }) filters?: ListUserInput) {
+  async GetUsers(@Args('filters', { nullable: true }) filters?: ListUserInput) {
     return this.userService.listUsers(filters);
   }
 
   @Mutation(() => User)
-  async createUser(@Args('payload') payload: CreateUserInput) {
+  async CreateUser(@Args('payload') payload: CreateUserInput) {
     return this.userService.createUser(payload);
   }
 
   @Mutation(() => User)
-  async updateUser(@Args('payload') payload: UpdateUserInput) {
+  async UpdateUser(@Args('payload') payload: UpdateUserInput) {
     return this.userService.updateUser(payload);
   }
 
   @Mutation(() => User)
-  async deleteUser(
+  async DeleteUser(
     @Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId,
   ) {
     return this.userService.deleteUser(_id);

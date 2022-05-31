@@ -8,7 +8,7 @@ export class AuthService {
   async validateUser(phone: string): Promise<any> {
     const user = await this.userService.findUserByPhone(phone);
 
-    console.log(user);
+    console.log(user.password);
 
     // if (user && user.password === password) {
     //   const { password, ...result } = user;
