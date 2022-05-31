@@ -8,42 +8,42 @@ export class User {
   @Field(() => String)
   _id: MongooseSchema.Types.ObjectId;
 
-  @Field(() => String)
+  @Field(() => String, {
+    nullable: true,
+    description:
+      'email is not mandatory for ease of registration and is filled out later',
+  })
   @Prop()
-  firstName: string;
+  email?: string;
 
+  // password is not returned to any client
   @Field(() => String)
   @Prop()
-  lastName: string;
+  password: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  nationalCode: string;
+  firstName?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  email: string;
+  lastName?: string;
+
+  @Field(() => String, { nullable: true })
+  @Prop()
+  nationalCode?: string;
 
   @Field(() => String)
   @Prop()
   phone: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  address: string;
+  address?: string;
 
-  @Field(() => String)
+  @Field(() => String, { nullable: true })
   @Prop()
-  userName: string;
-
-  @Field(() => String)
-  @Prop()
-  password: string;
-
-  @Field(() => String)
-  @Prop()
-  avatar: string;
-  
+  avatar?: string;
 }
 
 export type UserDocument = User & Document;
