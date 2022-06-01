@@ -34,7 +34,7 @@ export class User {
   nationalCode?: string;
 
   @Field(() => String)
-  @Prop()
+  @Prop({ unique: true, required: true })
   phone: string;
 
   @Field(() => String, { nullable: true })
