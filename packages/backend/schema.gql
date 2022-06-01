@@ -18,6 +18,11 @@ type User {
   avatar: String
 }
 
+type LoginResponse {
+  access_Token: String!
+  user: User!
+}
+
 type Query {
   user(_id: String!): User!
   users(filters: ListUserInput): [User!]!
@@ -35,6 +40,7 @@ type Mutation {
   createUser(payload: CreateUserInput!): User!
   updateUser(payload: UpdateUserInput!): User!
   deleteUser(_id: String!): User!
+  login(LoginUserInput: LoginUserInput!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -59,4 +65,9 @@ input UpdateUserInput {
   userName: String
   password: String
   avatar: String
+}
+
+input LoginUserInput {
+  phone: String!
+  password: String!
 }

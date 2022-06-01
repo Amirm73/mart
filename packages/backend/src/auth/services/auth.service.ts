@@ -12,18 +12,18 @@ export class AuthService {
     console.log(user);
 
     if (user && user.password === password) {
-      const { password, ...result } = user;
+      const { ...result } = user;
       return result;
     }
     return null;
   }
 
-  async login(loginUserInput: LoginUserInput){
+  async login(loginUserInput: LoginUserInput) {
     const user = await this.userService.findUserByPhone(loginUserInput.phone);
-    const { password, ...result } = user;
+    const { ...result } = user;
     return {
-      access_Token: "jwt",
-      user: result
-    }
+      access_Token: 'jwt',
+      user: result,
+    };
   }
 }
