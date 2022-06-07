@@ -16,11 +16,17 @@ type User {
   phone: String!
   address: String
   avatar: String
+  role: UserRole!
+}
+
+enum UserRole {
+  CUSTOMER
+  SELLER
+  PRODUCER
 }
 
 type LoginResponse {
-  access_Token: String!
-  user: User!
+  accessToken: String
 }
 
 type Query {

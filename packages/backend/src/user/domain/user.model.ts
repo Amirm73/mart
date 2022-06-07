@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-
+import { UserRole } from './userRole.enum';
 @ObjectType()
 @Schema()
 export class User {
@@ -44,6 +44,10 @@ export class User {
   @Field(() => String, { nullable: true })
   @Prop()
   avatar?: string;
+
+  @Field(() => UserRole, { defaultValue: UserRole.CUSTOMER })
+  @Prop()
+  role?: UserRole;
 }
 
 export type UserDocument = User & Document;
