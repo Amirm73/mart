@@ -1,28 +1,30 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
-import { ConfigService } from '@nestjs/config';
+import { Logger } from '@nestjs/common';
+import { join } from 'path';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-
-  const user = configService.get('RABBITMQ_USER');
-  const password = configService.get('RABBITMQ_PASSWORD');
-  const host = configService.get('RABBITMQ_HOST');
-  const queueName = configService.get('RABBITMQ_QUEUE_NAME');
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [`amqp://${user}:${password}@${host}`],
-      queue: queueName,
-      queueOptions: {
-        durable: true,
-      },
+const logger = new Logger('Main');
+const microserviceOptions: MicroserviceOptions = {
+  transport: Transport.GRPC,
+  options: {
+    url: `${process.env.GRPC_URL}`,
+    package: 'app',
+    protoPath: join(__dirname, './_proto/app.proto'),
+    loader: {
+      keepCase: true,
+      enums: String,
+      oneofs: true,
+      arrays: true,
     },
-  });
-
-  app.startAllMicroservices();
+  },
+};
+async function bootstrap() {
+  const app = await NestFactory.createMicroservice(
+    AppModule,
+    microserviceOptions,
+  );
+  app.listen();
+  logger.log('Microservice is listening ...');
 }
 bootstrap();

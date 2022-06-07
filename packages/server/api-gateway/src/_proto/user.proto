@@ -1,0 +1,55 @@
+syntax = 'proto3';
+package auth;
+import "common.proto";
+
+message User{
+	string email= 1;
+	string password= 2;
+	string firstName= 3;
+	string lastName= 4;
+	string nationalCode= 5;
+	string phone= 6;
+	string address= 7;
+	string avatar= 8;
+}
+
+message Users {
+	reapeted User = 1;
+}
+
+message ListUserInput {
+	string firstName = 1;
+	string lastName = 2;
+	string address = 3;
+}
+
+message CreateUserInput{
+	string email= 1;
+	string password= 2;
+	string firstName= 3;
+	string lastName= 4;
+	string nationalCode= 5;
+	string phone= 6;
+	string address= 7;
+	string avatar= 8;
+}
+
+message UpdateUserInput{
+	string email= 1;
+	string password= 2;
+	string firstName= 3;
+	string lastName= 4;
+	string nationalCode= 5;
+	string phone= 6;
+	string address= 7;
+	string avatar= 8;
+	string _id= 9;
+}
+
+service UserResolver {
+	rpc CreateUser(CreateUser) returns (User){}
+	rpc GetUserById(common.Id) returns (User){}
+	rpc GetUsers(ListUserInput) returns(Users){}
+	rpc UpdateUser(UpdateUserInput) reutrns (User){}
+	rpc DeleteUser(common.Id) returns (common.Id){}
+}
