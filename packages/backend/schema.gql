@@ -46,6 +46,7 @@ type Mutation {
   CreateUser(payload: CreateUserInput!): User!
   UpdateUser(payload: UpdateUserInput!): User!
   DeleteUser(_id: String!): User!
+  login(LoginUserInput: LoginUserInput!): LoginResponse!
 }
 
 input CreateUserInput {
