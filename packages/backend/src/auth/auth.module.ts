@@ -1,11 +1,25 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthResolver } from './auth.resolver';
-import { User } from '../user/domain/user.model';
+import { AuthService } from './services/auth.service';
+import { JwtModule } from '@nestjs/jwt';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
+import { AuthResolver } from './resolver/auth.resolver';
 
 @Module({
-  imports: [UserModule],
-  providers: [User, AuthService, AuthResolver],
+  imports: [
+    ConfigModule.forRoot({
+      envFilePath: `.${process.env.NODE_ENV}.env`,
+    }),
+    UserModule,
+    JwtModule.registerAsync({
+      useFactory: (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+        signOptions: { expiresIn: '60s' },
+      }),
+      inject: [ConfigService],
+    }),
+  ],
+  providers: [AuthResolver, AuthService],
+  exports: [AuthService],
 })
 export class AuthModule {}

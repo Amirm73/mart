@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
 import { Field, ObjectType } from '@nestjs/graphql';
-
+import { UserRole } from './userRole.enum';
 @ObjectType()
 @Schema()
 export class User {
@@ -17,6 +17,7 @@ export class User {
   email?: string;
 
   // password is not returned to any client
+  @Field(() => String)
   @Prop()
   password: string;
 
@@ -33,7 +34,7 @@ export class User {
   nationalCode?: string;
 
   @Field(() => String)
-  @Prop()
+  @Prop({ unique: true, required: true })
   phone: string;
 
   @Field(() => String, { nullable: true })
@@ -43,6 +44,10 @@ export class User {
   @Field(() => String, { nullable: true })
   @Prop()
   avatar?: string;
+
+  @Field(() => UserRole, { defaultValue: UserRole.CUSTOMER })
+  @Prop()
+  role?: UserRole;
 }
 
 export type UserDocument = User & Document;

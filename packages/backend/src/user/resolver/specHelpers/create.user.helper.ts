@@ -15,6 +15,7 @@ export const createUserMutation = `mutation
 export const createUserInput = {
   phone: chance.phone(),
   email: chance.email(),
+  password: chance.string({ length: 15 }),
 };
 
 export const createUserInputJustMail = {

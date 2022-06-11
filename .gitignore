@@ -1,4 +1,9 @@
-**/node_modules/**
-**/*.log
-packages/**/.env
+/**/node_modules/**
+
+#docker files
 packages/**/.docker
+packages/**/Dockerfile
+
+packages/**/*.env
+
+**/*.log

@@ -9,12 +9,24 @@ type User {
   email is not mandatory for ease of registration and is filled out later
   """
   email: String
+  password: String!
   firstName: String
   lastName: String
   nationalCode: String
   phone: String!
   address: String
   avatar: String
+  role: UserRole!
+}
+
+enum UserRole {
+  CUSTOMER
+  SELLER
+  PRODUCER
+}
+
+type LoginResponse {
+  accessToken: String
 }
 
 type Query {
@@ -26,16 +38,20 @@ input ListUserInput {
   firstName: String
   lastName: String
   address: String
+  phone: String
+  password: String
 }
 
 type Mutation {
   CreateUser(payload: CreateUserInput!): User!
   UpdateUser(payload: UpdateUserInput!): User!
   DeleteUser(_id: String!): User!
+  login(LoginUserInput: LoginUserInput!): LoginResponse!
 }
 
 input CreateUserInput {
   phone: String!
+  password: String!
   email: String
   firstName: String
   lastName: String
@@ -55,4 +71,9 @@ input UpdateUserInput {
   userName: String
   password: String
   avatar: String
+}
+
+input LoginUserInput {
+  phone: String!
+  password: String!
 }
