@@ -2,6 +2,12 @@ syntax = 'proto3';
 package auth;
 import "common.proto";
 
+enum UserRole {
+	CUSTOMER=1;
+	SELLER=2;
+	PRODUCER=3;
+}
+
 message User{
 	string email= 1;
 	string password= 2;
@@ -11,6 +17,7 @@ message User{
 	string phone= 6;
 	string address= 7;
 	string avatar= 8;
+	UserRole role= 9;
 }
 
 message Users {
@@ -32,6 +39,7 @@ message CreateUserInput{
 	string phone= 6;
 	string address= 7;
 	string avatar= 8;
+	UserRole role= 9;
 }
 
 message UpdateUserInput{
@@ -43,7 +51,8 @@ message UpdateUserInput{
 	string phone= 6;
 	string address= 7;
 	string avatar= 8;
-	string _id= 9;
+	UserRole role= 9;
+	string _id= 10;
 }
 
 service UserResolver {
