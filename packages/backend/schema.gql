@@ -39,7 +39,6 @@ input ListUserInput {
   lastName: String
   address: String
   phone: String
-  password: String
 }
 
 type Mutation {

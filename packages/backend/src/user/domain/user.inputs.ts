@@ -58,9 +58,6 @@ export class ListUserInput {
   userName?: string;
 
   @Field(() => String, { nullable: true })
-  password?: string;
-
-  @Field(() => String, { nullable: true })
   avatar?: string;
 }
 
