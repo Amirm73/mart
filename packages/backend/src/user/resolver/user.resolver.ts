@@ -2,10 +2,10 @@ import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { Schema as MongooseSchema } from 'mongoose';
 
 import { User } from '../domain/user.model';
-import { UserService } from '../service/user.service';
 import { CreateUserInput } from '../dto/CreateUser.input';
 import { ListUserInput } from '../dto/ListUsers.input';
 import { UpdateUserInput } from '../dto/UpdateUser.input';
+import { UserService } from '../service/user.service';
 
 @Resolver(() => User)
 export class UserResolver {
@@ -24,8 +24,8 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async CreateUser(@Args('payload') payload: CreateUserInput) {
-    return this.userService.createUser(payload);
+  async CreateUser(@Args('payload') { phone, password, email, firstName, lastName, nationalCode, address, avatar }: CreateUserInput) {
+    return this.userService.createUser(phone, password ,email, firstName, lastName, nationalCode, address, avatar );
   }
 
   @Mutation(() => User)
