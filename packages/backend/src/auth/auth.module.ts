@@ -1,15 +1,12 @@
-import { Module } from '@nestjs/common';
-import { AuthService } from './services/auth.service';
+import { CacheModule, Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { UserModule } from 'src/user/user.module';
 import { AuthResolver } from './resolver/auth.resolver';
-
+import { AuthService } from './services/auth.service';
+// import * as redisStore from 'cache-manager-redis-store';
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
-    }),
     UserModule,
     JwtModule.registerAsync({
       useFactory: (configService: ConfigService) => ({
@@ -17,6 +14,11 @@ import { AuthResolver } from './resolver/auth.resolver';
         signOptions: { expiresIn: '60s' },
       }),
       inject: [ConfigService],
+    }),
+    CacheModule.register({
+      // store: redisStore ,
+      host: 'localhost', //default host
+      port: 6581
     }),
   ],
   providers: [AuthResolver, AuthService],
