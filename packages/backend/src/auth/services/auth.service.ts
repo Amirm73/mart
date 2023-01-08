@@ -1,32 +1,36 @@
 import {
   BadRequestException,
+  CACHE_MANAGER,
   forwardRef,
   Inject,
-  Injectable
+  Injectable,
+  NotAcceptableException
 } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { Cache, memoryStore } from 'cache-manager';
 import { User } from '../../user/domain/user.model';
 import { UserService } from '../../user/service/user.service';
-import { LoginUserInput } from '../dto/LoginUser.input';
+
 @Injectable()
 export class AuthService {
   constructor(
     @Inject(forwardRef(() => UserService))
     private usersService: UserService,
     private jwtTokenService: JwtService,
+    @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
+
+  private memoryCache = memoryStore({ttl: 25000})
 
   async signup(phone: string) {
     const user = await this.usersService.findUserByPhone(phone);
-    
     if (user) {
       throw new BadRequestException(`Your phone number has been registered before`);
     } else {
       const pass = this.generatePassword();
-     console.log('=============  pass ============ : ',  pass); 
-     return pass
-      //  TODO: Redis SERVICE
+      await this.memoryCache.set(`${phone}`, `${pass}`);
+      return pass
       //  TODO: SEND SMS SERVICE
     }
   }
@@ -35,10 +39,25 @@ export class AuthService {
     return Math.floor(Math.random() * (max - min) + min);
   }
 
-  async login(loginUserInput: LoginUserInput) {
+  async registerClient(phone, inputPass) {
+    const user = await this.usersService.findUserByPhone(phone);
+    
+    if (user) {
+      throw new BadRequestException(`Your phone number has been registered before`);
+    } else {
+      const cachedPass = await this.memoryCache.get(`${phone}`);
+      if (cachedPass === inputPass) {
+        return await this.usersService.createUser( phone, inputPass )
+      } else {
+        throw new NotAcceptableException("Phone or password is incorrect")
+      }
+    }
+  }
+
+  async login(phone, password) {
     const user = await this.validateUserPass(
-      loginUserInput.phone,
-      loginUserInput.password,
+      phone,
+      password,
     );
     if (!user) {
       throw new BadRequestException(`Phone or password are invalid`);

@@ -52,6 +52,7 @@ type Mutation {
   DeleteUser(_id: String!): User!
   login(LoginUserInput: LoginUserInput!): LoginResponse!
   signup(SignupUserInput: SignupUserInput!): SignupResponse!
+  registerClient(RegisterClientInput: RegisterClientInput!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -85,4 +86,9 @@ input LoginUserInput {
 
 input SignupUserInput {
   phone: String!
+}
+
+input RegisterClientInput {
+  phone: String!
+  password: String!
 }
