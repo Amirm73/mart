@@ -16,7 +16,7 @@ type User {
   phone: String!
   address: String
   avatar: String
-  role: UserRole!
+  roles: [UserRole!]!
 }
 
 enum UserRole {
@@ -27,6 +27,10 @@ enum UserRole {
 
 type LoginResponse {
   accessToken: String
+}
+
+type SignupResponse {
+  password: String
 }
 
 type Query {
@@ -46,6 +50,8 @@ type Mutation {
   UpdateUser(payload: UpdateUserInput!): User!
   DeleteUser(_id: String!): User!
   login(LoginUserInput: LoginUserInput!): LoginResponse!
+  signup(SignupUserInput: SignupUserInput!): SignupResponse!
+  registerClient(RegisterClientInput: RegisterClientInput!): LoginResponse!
 }
 
 input CreateUserInput {
@@ -73,6 +79,15 @@ input UpdateUserInput {
 }
 
 input LoginUserInput {
+  phone: String!
+  password: String!
+}
+
+input SignupUserInput {
+  phone: String!
+}
+
+input RegisterClientInput {
   phone: String!
   password: String!
 }
