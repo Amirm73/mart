@@ -1,16 +1,16 @@
 import { INestApplication } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import { TestingModule, Test } from '@nestjs/testing';
-import { rootMongoTest, closeMongo } from '../../common/test/mongoose.helper';
-import { User, UserSchema } from '../../user/domain/user.model';
-import { createUserInput } from '../../user/resolver/specHelpers/create.user.helper';
-import { AuthService } from '../services/auth.service';
-import { LoginUserInput } from '../dto/LoginUser.input';
-import * as Chance from 'chance';
-import { JwtModule } from '@nestjs/jwt';
-import { UserService } from '../../user/service/user.service';
-import { UserRepository } from '../../user/repository/user.repository';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { MongooseModule } from '@nestjs/mongoose';
+import { Test, TestingModule } from '@nestjs/testing';
+import * as Chance from 'chance';
+import { closeMongo, rootMongoTest } from '../../common/test/mongoose.helper';
+import { User, UserSchema } from '../../user/domain/user.model';
+import { UserRepository } from '../../user/repository/user.repository';
+import { createUserInput } from '../../user/resolver/specHelpers/create.user.helper';
+import { UserService } from '../../user/service/user.service';
+import { LoginUserInput } from '../dto/LoginUser.input';
+import { AuthService } from '../services/auth.service';
 const chance = new Chance();
 
 describe('AuthService (unit)', () => {
@@ -41,31 +41,28 @@ describe('AuthService (unit)', () => {
     await app.close();
   });
 
-  const loginUserInput: LoginUserInput = {
-    phone: createUserInput.phone,
-    password: createUserInput.password,
-  };
+
   it('should create a user to test login', async () => {
-    user = await userService.createUser(createUserInput);
+    user = await userService.createUser(createUserInput.phone, createUserInput.password);
     expect(user).toBeDefined();
   });
 
   it.skip('should be able to generate an access token via correct password', async () => {
-    console.log(loginUserInput);
-    const { accessToken } = await authService.login(loginUserInput);
+    console.log();
+    const { accessToken } = await authService.login(createUserInput.phone, createUserInput.password);
     expect(accessToken).toBeDefined();
   });
 
   it('should not be able to generate an access token via different password', async () => {
     const incorrectUserInput: LoginUserInput = {
-      phone: loginUserInput.phone,
+      phone: createUserInput.phone,
       password: chance.string({ length: 14 }),
     };
 
     console.log(incorrectUserInput);
 
     try {
-      await authService.login(incorrectUserInput);
+      await authService.login(incorrectUserInput.phone, incorrectUserInput.password);
     } catch (err) {
       expect(err).toBeDefined();
       expect(err.response).toBeDefined();
