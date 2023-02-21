@@ -1,5 +1,4 @@
 import { Field, InputType } from '@nestjs/graphql';
-import { CategoryGroup } from 'src/category-group/category-group.model';
 
 @InputType()
 export class CreateCategoryInput {
@@ -16,8 +15,8 @@ export class CreateCategoryInput {
 	})
 	enName: string;
 
-	@Field(() => [CategoryGroup], {
+	@Field(() => [String], {
 		defaultValue:[]
 	})
-	categoryGroupIds?: CategoryGroup[];
+	categoryGroupIds?: String[];
 }
