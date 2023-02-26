@@ -28,12 +28,10 @@ export class UserService {
 
   async updateUser(_id, payload: UpdateUserInput) {
     const props = removeEmptyProperties(payload)
-   console.log('============= props.password ============ : ', props.password); 
     if (props.password) {
       props.password =  await bcrypt.hash(payload.password, 10) 
     }
 
-    console.log('============= props.password ==== after ======== : ', props.password); 
     return await this.userRepository.update( _id,{ ...props});
   }
    
