@@ -56,9 +56,9 @@ export class UserRepository {
     return await this.userModel.exists({ phone });
   }
 
-  update(updateUserInput: UpdateUserInput) {
+  update(_id, updateUserInput: UpdateUserInput) {
     return this.userModel
-      .findByIdAndUpdate(updateUserInput._id, updateUserInput, { new: true })
+      .findByIdAndUpdate(_id, updateUserInput, { new: true })
       .exec();
   }
 

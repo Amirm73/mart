@@ -21,7 +21,7 @@ export class AuthService {
     @Inject(CACHE_MANAGER) private cacheManager: Cache
   ) {}
 
-  private memoryCache = memoryStore({ttl: 25000})
+  private memoryCache = memoryStore({ttl: 360 })// uses seconds for TTL
 
   async signup(phone: string) {
     const user = await this.usersService.findUserByPhone(phone);
@@ -29,7 +29,31 @@ export class AuthService {
       throw new BadRequestException(`Your phone number has been registered before`);
     } else {
       const pass = this.generatePassword();
-      await this.memoryCache.set(`${phone}`, `${pass}`);
+      await this.setCache(phone, pass);
+      return pass
+      //  TODO: SEND SMS SERVICE
+    }
+  }
+
+  async timeoutPassword(phone: string) {
+    const user = await this.usersService.findUserByPhone(phone);
+    if (user) {
+      throw new BadRequestException(`Your phone number has been registered before`);
+    } else {
+      const pass = this.generatePassword();
+      await this.setCache(phone, pass);
+      return pass
+      //  TODO: SEND SMS SERVICE
+    }
+  }
+
+  async forgotPassword(phone: string) {
+    const user = await this.usersService.findUserByPhone(phone);
+    if (!user) {
+      throw new BadRequestException(`Your phone number has NOT been registered before`);
+    } else {
+      const pass = this.generatePassword();
+       await this.usersService.updateUser( user._id,{ password: pass.toString()})
       return pass
       //  TODO: SEND SMS SERVICE
     }
@@ -37,6 +61,10 @@ export class AuthService {
 
   private generatePassword(min=1000, max=9999) {
     return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  private async setCache(phone, pass) { 
+    return await this.memoryCache.set(`${phone}`, `${pass}`)
   }
 
   async registerClient(phone, inputPass) {
