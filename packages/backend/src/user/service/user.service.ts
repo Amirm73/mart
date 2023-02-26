@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { Schema as MongooseSchema } from 'mongoose';
+import { removeEmptyProperties } from 'src/common/helpers';
 import { ListUserInput } from '../dto/ListUsers.input';
 import { UpdateUserInput } from '../dto/UpdateUser.input';
 import { UserRepository } from '../repository/user.repository';
@@ -25,10 +26,17 @@ export class UserService {
     return await this.userRepository.findAll(filters);
   }
 
-  async updateUser(payload: UpdateUserInput) {
-    return await this.userRepository.update(payload);
-  }
+  async updateUser(_id, payload: UpdateUserInput) {
+    const props = removeEmptyProperties(payload)
+   console.log('============= props.password ============ : ', props.password); 
+    if (props.password) {
+      props.password =  await bcrypt.hash(payload.password, 10) 
+    }
 
+    console.log('============= props.password ==== after ======== : ', props.password); 
+    return await this.userRepository.update( _id,{ ...props});
+  }
+   
   async deleteUser(_id: MongooseSchema.Types.ObjectId) {
     return await this.userRepository.delete(_id);
   }

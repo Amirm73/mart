@@ -31,6 +31,32 @@ export class AuthResolver {
     }
   }
 
+  @Mutation(() => SignupResponse)
+  // @UseGuards(AuthGuard('local'))
+  async timeoutPassword(@Args('SignupUserInput') signupUserInput: SignupUserInput) {
+    try {
+      const password = await this.authService.timeoutPassword(signupUserInput.phone);
+      return{ password }
+    } catch (error) {
+      throw {
+        message: error.message
+       }
+    }
+  }
+
+  @Mutation(() => SignupResponse)
+  // @UseGuards(AuthGuard('local'))
+  async forgotPassword(@Args('SignupUserInput') signupUserInput: SignupUserInput) {
+    try {
+      const password = await this.authService.forgotPassword(signupUserInput.phone);
+      return{ password }
+    } catch (error) {
+      throw {
+        message: error.message
+       }
+    }
+  }
+
   @Mutation( ()=> LoginResponse)
   // @UseGuards(AuthGuard('local'))
   async registerClient(@Args ('RegisterClientInput') {phone, password}:RegisterClientInput ){

@@ -29,8 +29,8 @@ export class UserResolver {
   }
 
   @Mutation(() => User)
-  async UpdateUser(@Args('payload') payload: UpdateUserInput) {
-    return this.userService.updateUser(payload);
+  async UpdateUser(@Args('_id', { type: () => String }) _id: MongooseSchema.Types.ObjectId, @Args('payload') payload: UpdateUserInput) {
+    return this.userService.updateUser(_id, payload);
   }
 
   @Mutation(() => User)
