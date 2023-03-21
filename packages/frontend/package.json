@@ -22,10 +22,22 @@
     "react-redux": "^8.0.5",
     "styled-components": "^5.3.9",
     "typescript": "5.0.2"
-    
   },
   "devDependencies": {
-    "@types/styled-components": "^5.1.26"
-  }
-  
+    "@types/styled-components": "^5.1.26",
+    "babel-plugin-styled-components": "^1.11.1"
+  },
+  "presets": [
+    "next/babel"
+  ],
+  "plugins": [
+    [
+      "styled-components",
+      {
+        "ssr": true,
+        "displayName": true,
+        "preprocess": false
+      }
+    ]
+  ]
 }
