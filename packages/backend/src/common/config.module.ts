@@ -6,7 +6,7 @@ console.log(process.env.NODE_ENV);
 @Module({
   imports: [
     NestConfigModule.forRoot({
-      envFilePath: `.${process.env.NODE_ENV}.env`,
+      envFilePath: `${process.env.NODE_ENV}.env`,
       isGlobal: true,
     }),
   ],

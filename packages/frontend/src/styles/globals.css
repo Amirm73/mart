@@ -7,14 +7,55 @@
   font-family: "Iran";
   src: url("./font/Irann.ttf");
 }
+@font-face {
+  font-family: "Iran1";
+  src: url("./font/Qs_Iranyekan_black.ttf");
+}
+
+@font-face {
+  font-family: "Iran2";
+  src: url("./font/Qs_Iranyekan.ttf");
+}
+@font-face {
+  font-family: "Iran3";
+  src: url("./font/Qs_Iranyekan\ extrabold.ttf");
+}
+@font-face {
+  font-family: "Iran4";
+  src: url("./font/Qs_Iranyekan\ extrabold.ttf");
+}
+@font-face {
+  font-family: "shablon";
+  src: url("./font/A\ Ordibehesht\ shablon.TTF");
+}
+@font-face {
+  font-family: zar;
+  src: url("./font/B\ Zar_0.ttf");
+}
+@font-face {
+  font-family: B-naz;
+  src: url("./font/B-NAZANIN.TTF");
+}
+@font-face {
+  font-family: "Vazir1";
+  src: url("./font/Vazir-Medium-FD-WOL.ttf");
+}
+@font-face {
+  font-family: "san";
+  src: url("./font/Qs_Iranyekan\ medium.ttf");
+}
+@font-face {
+  font-family: "san1";
+  src: url("./font/persian-badkh@t2.ttf");
+}
 
 html,
 body {
-  background-color: #f8f8f8;
+  background-color: white;
   max-width: 100vw;
   overflow-x: hidden;
 
-  font-family: Iran;
+  font-family: "Iran2";
 }
 
 a {
@@ -47,5 +88,6 @@ ul {
 
 input {
   /* outline: none; */
+  font-family: "Iran2";
   border: none;
 }
