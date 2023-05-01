@@ -1,22 +1,35 @@
 import { Field, InputType } from '@nestjs/graphql';
+import { FileUpload, GraphQLUpload } from 'graphql-upload';
 import { Schema } from 'mongoose';
 
 @InputType()
 export class CreateProductInput {
 	@Field(() => String, {
-		nullable: true,
 		description:
 			'this name is usually shown to user and is in native language',
 	})
-	name?: string;
+	name: string;
 
 	@Field(() => String, {
+		nullable:true,
 		description:"for non english products usually there is a english name."
 	})
-	enName: string;
+	enName?: string;
+
+	@Field(() => String, {
+		nullable: true,
+		description:"this description is shown in product catalog"
+	})
+	description?: string;
+
+	@Field(() => GraphQLUpload, {
+		nullable:true,
+		description: "the official images of product"
+	})
+	image?: FileUpload
 
 	@Field(() => [String], {
 		defaultValue:[]
 	})
-	ProductIds?: Schema.Types.ObjectId[];
+	inventoryIds?: Schema.Types.ObjectId[];
 }

@@ -3,7 +3,10 @@ import { Schema } from 'mongoose';
 
 @InputType()
 export class FindProductInput {
-	@Field(() => String, {description:"the id of Product group is returned when created"})
+	@Field(() => String, {
+		nullable:true,
+		description: "the id of product that is returned when created"
+	})
 	_id?: Schema.Types.ObjectId;
 	
 	@Field(() => String, {

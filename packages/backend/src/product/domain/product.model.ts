@@ -1,43 +1,46 @@
-
 import { Field, ObjectType } from '@nestjs/graphql';
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document, Schema as MongooseSchema } from 'mongoose';
-
 @ObjectType()
 @Schema()
 export class Product {
-  @Field(() => String)
-  _id: MongooseSchema.Types.ObjectId;
+  @Field(() => String,{
+    nullable: true
+  })
+  _id?: MongooseSchema.Types.ObjectId;
 
   @Field(() => String, {
     nullable: true,
-    description:
-      'name of the product in native language',
+    description: 'name of the product in native language',
   })
   @Prop()
-  name: string;
+  name?: string;
 
   @Field(() => String, {
     nullable: true,
-    description:
-      'name of the product in native language',
+    description: 'name of the product in native language',
   })
   @Prop()
   enName?: string;
 
   @Field(() => String, {
-      nullable: true,
+    nullable: true,
+	  description:"usually for non-english named products, there is an english name."
   })
   @Prop()
-  description: string;
+  description?: string;
 
-  @Field(() => [String], { defaultValue:[] })
-  @Prop({ type: [String] })
-  images: string[];
+  // @Field(() => GraphQLUpload, {
+  //   nullable: true
+  // })
+  // @Prop({type: MongooseSchema.Types.Buffer })
+  // image?: FileUpload
 
-  @Field(() => [String], { defaultValue: [] })
+  @Field(() => [String], {
+    defaultValue: []
+  })
   @Prop({type:[ MongooseSchema.Types.ObjectId], ref: 'Inventory'})
-  InventoryIds?:MongooseSchema.Types.ObjectId[];
+  inventoryIds?:MongooseSchema.Types.ObjectId[];
 }
 
 

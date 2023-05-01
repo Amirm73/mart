@@ -9,6 +9,7 @@ type User {
   email is not mandatory for ease of registration and is filled out later
   """
   email: String
+  password: String!
   firstName: String
   lastName: String
   nationalCode: String
@@ -32,9 +33,36 @@ type SignupResponse {
   password: String
 }
 
+type Category {
+  _id: String!
+
+  """
+  email is not mandatory for ease of registration and is filled out later
+  """
+  name: String
+  enName: String
+  categoryIds: [String!]!
+}
+
+type Product {
+  _id: String
+
+  """name of the product in native language"""
+  name: String
+
+  """name of the product in native language"""
+  enName: String
+
+  """usually for non-english named products, there is an english name."""
+  description: String
+  inventoryIds: [String!]!
+}
+
 type Query {
   user(_id: String!): User!
   users(filters: ListUserInput): [User!]!
+  findCategory(findCategoryInput: FindCategoryInput!): Category!
+  findProduct(findProductInput: FindProductInput!): Product!
 }
 
 input ListUserInput {
@@ -44,6 +72,28 @@ input ListUserInput {
   phone: String
 }
 
+input FindCategoryInput {
+  """the id of category group is returned when created"""
+  _id: String!
+
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String
+}
+
+input FindProductInput {
+  """the id of product that is returned when created"""
+  _id: String
+
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String
+}
+
 type Mutation {
   CreateUser(payload: CreateUserInput!): User!
   UpdateUser(payload: UpdateUserInput!): User!
@@ -51,6 +101,12 @@ type Mutation {
   login(LoginUserInput: LoginUserInput!): LoginResponse!
   signup(SignupUserInput: SignupUserInput!): SignupResponse!
   registerClient(RegisterClientInput: RegisterClientInput!): LoginResponse!
+  createCategory(createCategoryInput: CreateCategoryInput!): Category!
+  updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
+  deleteCategory(deleteCategoryInput: DeleteCategoryInput!): Category!
+  createProduct(createProductInput: CreateProductInput!): Product!
+  updateProduct(updateProductInput: UpdateProductInput!): Product!
+  deleteProduct(deleteProductInput: DeleteProductInput!): Product!
 }
 
 input CreateUserInput {
@@ -89,4 +145,65 @@ input SignupUserInput {
 input RegisterClientInput {
   phone: String!
   password: String!
+}
+
+input CreateCategoryInput {
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String!
+  categoryIds: [String!] = []
+}
+
+input UpdateCategoryInput {
+  """the id of category group is returned when created"""
+  _id: String!
+
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String
+  categoryIds: [String!] = []
+}
+
+input DeleteCategoryInput {
+  """the id of category group is returned when created"""
+  _id: String!
+}
+
+input CreateProductInput {
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String
+
+  """this description is shown in product catalog"""
+  description: String
+
+  """the official images of product"""
+  image: Upload
+  inventoryIds: [String!] = []
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateProductInput {
+  """the id of Product group is returned when created"""
+  _id: String!
+
+  """this name is usually shown to user and is in native language"""
+  name: String
+
+  """for non english products usually there is a english name."""
+  enName: String
+  ProductIds: [String!] = []
+}
+
+input DeleteProductInput {
+  """the id of Product group is returned when created"""
+  _id: String!
 }
