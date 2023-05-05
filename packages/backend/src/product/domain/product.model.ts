@@ -30,11 +30,11 @@ export class Product {
   @Prop()
   description?: string;
 
-  // @Field(() => GraphQLUpload, {
-  //   nullable: true
-  // })
-  // @Prop({type: MongooseSchema.Types.Buffer })
-  // image?: FileUpload
+  @Field(() => String, {
+    nullable: true
+  })
+  @Prop()
+  image?: string
 
   @Field(() => [String], {
     defaultValue: []

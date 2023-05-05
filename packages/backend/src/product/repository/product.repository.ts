@@ -8,8 +8,8 @@ export class ProductRepository{
 		@InjectModel(Product.name) private readonly ProductModel:Model<IProductDocument> 
 	){}
 
-	async create(name: string, enName: string,description:string, image: Buffer, inventoryIds: Schema.Types.ObjectId[]) {
-		const created = new this.ProductModel({ name, enName, description, image, inventoryIds })
+	async create(name: string, enName: string,description:string, imageURL: string, inventoryIds: Schema.Types.ObjectId[]) {
+		const created = new this.ProductModel({ name, enName, description, image: imageURL, inventoryIds })
 		console.log('============= created ============ : ', created);
 		return await created.save()
 	}
