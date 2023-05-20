@@ -10,7 +10,6 @@ export class ProductRepository{
 
 	async create(name: string, enName: string,description:string, imageURL: string, inventoryIds: Schema.Types.ObjectId[]) {
 		const created = new this.ProductModel({ name, enName, description, image: imageURL, inventoryIds })
-		console.log('============= created ============ : ', created);
 		return await created.save()
 	}
 
@@ -23,10 +22,8 @@ export class ProductRepository{
 	}
 
 	async find(_id?: Schema.Types.ObjectId, name?:string, enName?:string) {
-		console.log('============= _id ============ : ', _id);
 		// const res = await this.ProductModel.find({_id, name, enName})
 		const res = await this.ProductModel.findById(_id)
-		console.log('============= res ============ : ', res);
 		return res 
 	}
 

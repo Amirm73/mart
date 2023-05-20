@@ -1,4 +1,3 @@
-import { BadRequestException } from "@nestjs/common";
 import { Args, Mutation, Query, Resolver } from "@nestjs/graphql";
 import { Product } from "../domain/product.model";
 import { CreateProductInput } from "../dto/CreateProduct.input";
@@ -12,23 +11,8 @@ export class ProductResolver{
 	constructor(private readonly ProductService: ProductService) {}
 
 	@Mutation(()=> Product)
-	async createProduct(@Args('createProductInput') {name , enName, description, image, inventoryIds}:CreateProductInput) {
-		if(!image) 
-			return this.ProductService.createProduct(name , enName, description, undefined, inventoryIds)	
-		
-		// read and store image as Buffer
-		const imageObject = await image
-		let readStream = imageObject.createReadStream()
-		let data = ''
-		let bufferImage: Buffer;
-		readStream.once('error', (err: any) => {
-			throw new BadRequestException(err.message)
-		})
-		readStream.on('data', (chunk: string) => (data += chunk))
-		readStream.on('end', () => {
-			bufferImage = Buffer.from(data, 'binary')
-			return this.ProductService.createProduct(name , enName, description, bufferImage, inventoryIds)	
-		})
+	async createProduct(@Args('createProductInput') {name , enName, description, imageUpload, inventoryIds}:CreateProductInput) {
+		return this.ProductService.createProduct(name , enName, description, imageUpload, inventoryIds)	
 	}
 
 	@Query(()=> Product)
