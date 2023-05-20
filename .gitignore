@@ -7,3 +7,5 @@ packages/**/Dockerfile
 packages/**/*.env
 
 **/*.log
+packages/backend/public/
+packages/backend/schema.gql
