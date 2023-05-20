@@ -2,6 +2,50 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+interface IHomeImage {
+  imageUrl: String!
+  title: String
+  alt: String
+}
+
+"""for brands, partnerships, etc"""
+interface IFigure {
+  image: IHomeImage!
+  description: String!
+}
+
+interface IHomeFigure {
+  """the brands of our products"""
+  brands: [IFigure!]
+
+  """example: fast delivery, cash back etc"""
+  ourValues: [IFigure!]
+}
+
+interface IPhoto {
+  _id: String!
+  image: IHomeImage!
+  pageUrl: String!
+}
+
+interface IHomePhotos {
+  sliders: [IPhoto!]!
+  banners: [IPhoto!]!
+}
+
+interface IProduct {
+  image: IHomeImage!
+  normalPrice: Int!
+  salePrice: Int!
+  off: Int!
+}
+
+interface IHomeProduct {
+  incredible: [IProduct!]!
+  topView: [IProduct!]!
+  bestSelling: [IProduct!]!
+}
+
 type User {
   _id: String!
 
@@ -44,25 +88,109 @@ type Category {
   categoryIds: [String!]!
 }
 
+"""save home-page needed data for one query and lean response"""
+type HomePage {
+  _id: String!
+
+  """banners of home page"""
+  photos: IHomePhotos
+
+  """products of home page like incredible, most viewed, etc"""
+  products: IHomeProduct
+
+  """figures of home page like brands and services"""
+  figures: IHomeFigure
+}
+
+type Image {
+  _id: String
+
+  """uri of image on the server"""
+  url: String!
+
+  """uri of image on the server"""
+  directory: String!
+
+  """describing the content format, for example image/png"""
+  mimetype: String
+
+  """the id of the user that uploaded image"""
+  creatorId: String
+
+  """an explanation of the image,only visible on mouse-over"""
+  title: String
+
+  """
+  describe the visual elements of the image to the search engine crawlers
+  """
+  alt: String
+}
+
 type Product {
   _id: String
 
   """name of the product in native language"""
   name: String
 
-  """name of the product in native language"""
+  """name of the product in English language"""
   enName: String
 
   """usually for non-english named products, there is an english name."""
   description: String
+  image: String
   inventoryIds: [String!]!
+}
+
+input HomeImage {
+  imageUrl: String!
+  title: String
+  alt: String
+}
+
+input Figure {
+  image: HomeImage!
+  description: String!
+}
+
+input HomeFigure {
+  """the brands of our products"""
+  brands: [Figure!]
+
+  """example: fast delivery, cash back etc"""
+  ourValues: [Figure!]
+}
+
+input Banner {
+  _id: String!
+  image: HomeImage!
+  pageUrl: String!
+}
+
+input HomePhotos {
+  sliders: [Banner!]!
+  banners: [Banner!]!
+}
+
+input ProductType {
+  image: HomeImage!
+  normalPrice: Int!
+  salePrice: Int!
+  off: Int!
+}
+
+input HomeProduct {
+  incredible: [ProductType!]!
+  topView: [ProductType!]!
+  bestSelling: [ProductType!]!
 }
 
 type Query {
   user(_id: String!): User!
   users(filters: ListUserInput): [User!]!
   findCategory(findCategoryInput: FindCategoryInput!): Category!
+  Image(listImagesInput: ListImagesInput!): [Image!]!
   findProduct(findProductInput: FindProductInput!): Product!
+  GetHomePage: HomePage!
 }
 
 input ListUserInput {
@@ -81,6 +209,10 @@ input FindCategoryInput {
 
   """for non english products usually there is a english name."""
   enName: String
+}
+
+input ListImagesInput {
+  directory: String
 }
 
 input FindProductInput {
@@ -104,9 +236,14 @@ type Mutation {
   createCategory(createCategoryInput: CreateCategoryInput!): Category!
   updateCategory(updateCategoryInput: UpdateCategoryInput!): Category!
   deleteCategory(deleteCategoryInput: DeleteCategoryInput!): Category!
+  CreateImage(createImageInput: CreateImageInput!): Image!
+  UpdateImage(updateImageInput: UpdateImageInput!): Image!
+  DeleteImage(_id: String!): Image!
   createProduct(createProductInput: CreateProductInput!): Product!
   updateProduct(updateProductInput: UpdateProductInput!): Product!
   deleteProduct(deleteProductInput: DeleteProductInput!): Product!
+  CreateHomePage(updateHomePageInput: CreateHomePageInput!): HomePage!
+  UpdateHomePage(updateHomePageInput: UpdateHomePageInput!): HomePage!
 }
 
 input CreateUserInput {
@@ -173,9 +310,46 @@ input DeleteCategoryInput {
   _id: String!
 }
 
+input CreateImageInput {
+  """the official images of product"""
+  fileUpload: Upload
+
+  """location of image on the server"""
+  directory: String!
+
+  """location of image on the server"""
+  fileName: String!
+
+  """describing the content format, for example image/png"""
+  mimetype: String
+
+  """an explanation of the image,only visible on mouse-over"""
+  title: String
+
+  """
+  describe the visual elements of the image to the search engine crawlers
+  """
+  alt: String
+}
+
+"""The `Upload` scalar type represents a file upload."""
+scalar Upload
+
+input UpdateImageInput {
+  _id: String!
+
+  """an explanation of the image, only visible on mouse-over"""
+  title: String
+
+  """
+  describe the visual elements of the image to the search engine crawlers
+  """
+  alt: String
+}
+
 input CreateProductInput {
   """this name is usually shown to user and is in native language"""
-  name: String
+  name: String!
 
   """for non english products usually there is a english name."""
   enName: String
@@ -184,12 +358,9 @@ input CreateProductInput {
   description: String
 
   """the official images of product"""
-  image: Upload
+  imageUpload: Upload
   inventoryIds: [String!] = []
 }
-
-"""The `Upload` scalar type represents a file upload."""
-scalar Upload
 
 input UpdateProductInput {
   """the id of Product group is returned when created"""
@@ -206,4 +377,28 @@ input UpdateProductInput {
 input DeleteProductInput {
   """the id of Product group is returned when created"""
   _id: String!
+}
+
+input CreateHomePageInput {
+  """banners of home page"""
+  photos: HomePhotos
+
+  """products of home page like incredible, most viewed, etc"""
+  products: HomeProduct
+
+  """figures of home page like brands and services"""
+  figures: HomeFigure
+}
+
+input UpdateHomePageInput {
+  _id: String!
+
+  """banners and sliders of the home page"""
+  photos: HomePhotos
+
+  """products of home page like incredible, most viewed, etc"""
+  products: HomeProduct
+
+  """figures of home page like brands and services"""
+  figures: HomeFigure
 }
