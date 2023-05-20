@@ -26,7 +26,7 @@ export class CreateProductInput {
 		nullable:true,
 		description: "the official images of product"
 	})
-	image?: FileUpload
+	imageUpload?: FileUpload
 
 	@Field(() => [String], {
 		defaultValue:[]

@@ -18,7 +18,7 @@ export class Product {
 
   @Field(() => String, {
     nullable: true,
-    description: 'name of the product in native language',
+    description: 'name of the product in English language',
   })
   @Prop()
   enName?: string;

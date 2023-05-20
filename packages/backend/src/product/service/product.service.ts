@@ -1,19 +1,23 @@
 import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
-import { promises as fs } from 'fs';
+import { FileUpload } from 'graphql-upload';
 import { Schema } from "mongoose";
+import { ImageService } from "../../image/service/image.service";
 import { Product } from "../domain/product.model";
 import { DeleteProductInput } from "../dto/DeleteProduct.input";
 import { FindProductInput } from "../dto/FindProduct.input";
 import { UpdateProductInput } from "../dto/UpdateProduct.input";
-import { memType } from "../dto/image.enum";
 import { ProductRepository } from "../repository/product.repository";
 @Injectable()
 export class ProductService {
-	constructor(private ProductRepository: ProductRepository) { }
+	constructor(private ProductRepository: ProductRepository,
+		private imageService: ImageService
+	) { }
 
-	async createProduct(name: string, enName?: string, description?: string, image?: Buffer,  imageMimeType?:string, inventoryIds?: Schema.Types.ObjectId[]) {
-		const imageUrl = await this.writeImageOnDisk(image, imageMimeType, enName)
-		return await this.ProductRepository.create(name, enName, description, imageUrl, inventoryIds)
+	async createProduct(name: string, enName?: string, description?: string, imageUpload?: FileUpload, inventoryIds?: Schema.Types.ObjectId[]) {
+		const image = imageUpload ?
+			await this.imageService.createImage({ fileUpload: imageUpload, fileName: enName, title: enName, directory:"/product/" })
+			: null
+		return await this.ProductRepository.create(name, enName, description, image?.url, inventoryIds)
 	}
 
 	async findProduct({ _id, name, enName }: FindProductInput) {
@@ -35,14 +39,5 @@ export class ProductService {
 			throw new BadRequestException("You should remove inventories first")
 		
 		return await this.ProductRepository.delete(_id)
-	}
-
-	async writeImageOnDisk(image: Buffer,  imageMimeType:string, productName = "productImage") {
-		const format = memType[imageMimeType]
-		const date = new Date().toISOString()
-		const path = "public/products/" + productName + '.' + date + '.' + format
-		
-		await fs.writeFile(path, image);
-		return path
 	}
 }
